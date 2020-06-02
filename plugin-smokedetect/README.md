@@ -42,6 +42,11 @@ Start the server:
 There are two options to train the smoke detection neural network. The first one is to
 run the jupyter notebook on a Kubernetes cluster (for us it is temporarily going to be [Nautilus](https://nautilus.optiputer.net/)). The second option is to run it locally assuming that there is a GPU availabe on the local node (the docker image might fail but Tensorflow will not).
 ### Training on a Kubernetes Cluster (Nautilus):
+Clone the smoke detection model:
+```
+git clone https://gitlab.nautilus.optiputer.net/i3perez/keras-smoke-detection
+cd keras-smoke-detection
+```
 Create a persistent volume claim on Nautilus under the Sage namespace (not needed now since it exists):
 ```
 kubectl create -f keras.pvc.yaml
