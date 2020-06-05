@@ -4,30 +4,9 @@ import tflite_runtime.interpreter as tflite
 import time,datetime,os,sys,subprocess
 import waggle.plugin,logging,requests
 
-#Sage Storage API parameters
-SAGE_USER_TOKEN = os.getenv('SAGE_USER_TOKEN')
-if SAGE_USER_TOKEN is None:
-    raise EnvironmentError("Failed because {} is not set.".format('SAGE_USER_TOKEN'))
-
-SAGE_HOST = os.getenv('SAGE_HOST')
-if SAGE_HOST is None:
-    raise EnvironmentError("Failed because {} is not set.".format('SAGE_HOST'))
-
-BUCKET_ID_MODEL = os.getenv('BUCKET_ID_MODEL')
-if BUCKET_ID_MODEL is None:
-    raise EnvironmentError("Failed because {} is not set.".format('BUCKET_ID_MODEL'))
-
 object = 'model.tflite'
 directory = '/data/model/'
 modelPath = os.path.join(directory,object)
-modelVersion = '2020-05-26'
-cloudPath = os.path.join('output/',modelVersion, object)
-#Does model exist on waggle node
-if not os.path.exists(modelPath):
-    command = 'sage-cli.py storage files download ' + str(BUCKET_ID_MODEL) + \
-            ' ' + str(cloudPath) + ' --target ' + modelPath
-    result = subprocess.run(command, check=True, shell=True,\
-                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 #HPWREN Parameters
 hpwrenUrl = "https://firemap.sdsc.edu/pylaski/\

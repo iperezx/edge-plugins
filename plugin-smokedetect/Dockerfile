@@ -6,6 +6,9 @@ RUN pip3 install -r /src/requirements.txt
 ARG SAGE_USER_TOKEN="-10"
 ARG SAGE_HOST="HOST"
 ARG BUCKET_ID_MODEL="BUCKET_ID_MODEL"
+RUN mkdir -p /data/model/
+RUN sage-cli.py storage files download ${BUCKET_ID_MODEL}  model.tflite --target /data/model/model.tflite
+#ADD /data/model/model.tflite /data/model/model.tflite
 ENV WAGGLE_PLUGIN_ID="50" \
     WAGGLE_PLUGIN_NAME="Smoke Detection Model" \
     WAGGLE_PLUGIN_REF="https://github.com/iperezx/edge-plugins/tree/master/plugin-smokedetect" \
