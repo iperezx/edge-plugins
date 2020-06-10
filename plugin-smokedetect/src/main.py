@@ -18,7 +18,7 @@ camObj = hpwren.cameras(hpwrenUrl)
 imageURL,description = camObj.getImageURL(cameraID,siteID)
 
 #For plugin
-plugin = waggle.plugin.PrintPlugin()
+plugin = waggle.plugin.Plugin()
 
 print('Starting smoke detection inferencing')
 while True:
