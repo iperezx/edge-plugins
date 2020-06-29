@@ -17,13 +17,13 @@ The `BUCKET_ID_MODEL` has been set public so any SAGE user can access the smoke 
 
 Build the image:
 ```
-docker build --build-arg SAGE_HOST=${SAGE_HOST} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} --build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} -t sagecontinuum/plugin-smokedetect:0.3.0 .
+docker build --build-arg SAGE_HOST=${SAGE_HOST} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} --build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} -t sagecontinuum/plugin-smokedetect:0.4.0 .
 ```
 where the `--build-arg` adds all the necessary enviroment variables for the [Sage Storage API](https://github.com/sagecontinuum/sage-storage-api) and [Sage CLI](https://github.com/sagecontinuum/sage-cli)
 
 Run the container(optional since the waggle-node will run it automatically):
 ```
-docker run sagecontinuum/plugin-smokedetect:0.3.0
+docker run sagecontinuum/plugin-smokedetect:0.4.0
 ```
 # Instructions
 The following instructions are meant to serve a user from start to finish of how to create the smoke detection plugin.
@@ -125,7 +125,7 @@ To start the waggle node (this assumes an existing beehive instance):
 
 To start a plugin you will need to create a docker image(see Docker container usage section) and pass the following command:
 ```bash
-./waggle-node schedule sagecontinuum/plugin-smokedetect:0.3.0
+./waggle-node schedule sagecontinuum/plugin-smokedetect:0.4.0
 ```
 To view the output:
 ```bash
@@ -134,12 +134,12 @@ To view the output:
 
 Example output of the plugin:
 ```
-plugin-50-0.3.0-0_1     | published measurements:
-plugin-50-0.3.0-0_1     | {'sensor_id': 1, 'sensor_instance': 0, 'parameter_id': 10, 'timestamp': 1590612232, 'value': 0.58723384141922}
-plugin-50-0.3.0-0_1     | Get image from HPWREN Camera
-plugin-50-0.3.0-0_1     | Image url: https://hpwren.ucsd.edu/cameras/L/bm-n-mobo-m.jpg
-plugin-50-0.3.0-0_1     | Description: Big Black Mountain ~north view, monochrome
-plugin-50-0.3.0-0_1     | Perform an inference based on trainned model
-plugin-50-0.3.0-0_1     | No Fire, 57.16%
-plugin-50-0.3.0-0_1     | Publish
+plugin-50-0.4.0-0_1     | published measurements:
+plugin-50-0.4.0-0_1     | {'sensor_id': 1, 'sensor_instance': 0, 'parameter_id': 10, 'timestamp': 1590612232, 'value': 0.58723384141922}
+plugin-50-0.4.0-0_1     | Get image from HPWREN Camera
+plugin-50-0.4.0-0_1     | Image url: https://hpwren.ucsd.edu/cameras/L/bm-n-mobo-m.jpg
+plugin-50-0.4.0-0_1     | Description: Big Black Mountain ~north view, monochrome
+plugin-50-0.4.0-0_1     | Perform an inference based on trainned model
+plugin-50-0.4.0-0_1     | No Fire, 57.16%
+plugin-50-0.4.0-0_1     | Publish
 ```
