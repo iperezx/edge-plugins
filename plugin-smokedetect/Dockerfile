@@ -18,6 +18,6 @@ ENV LC_ALL="C.UTF-8" \
     WAGGLE_PLUGIN_REF="https://github.com/iperezx/edge-plugins/tree/master/plugin-smokedetect" \
     SAGE_USER_TOKEN=${SAGE_USER_TOKEN} \
     SAGE_HOST=${SAGE_HOST} \
-    BUCKET_ID_MODEL=${BUCKET_ID_MODEL}
+    BUCKET_ID_MODEL=${BUCKET_ID_MODEL} 
 RUN sage-cli.py storage files download ${BUCKET_ID_MODEL}  model.tflite --target /data/model/model.tflite
 CMD [ "python3","/src/main.py" ]

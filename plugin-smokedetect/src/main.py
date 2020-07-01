@@ -1,6 +1,6 @@
 import numpy as np
 import inference,hpwren
-import tensorflow as tf
+import tflite_runtime.interpreter as tflite
 import time,datetime,os,sys,subprocess
 import waggle.plugin,logging,requests
 
@@ -27,7 +27,7 @@ while True:
     print("Image url: " + imageURL)
     print("Description: " + description)
     testObj.urlToImage(imageURL)
-    interpreter = tf.lite.Interpreter(model_path=modelPath)
+    interpreter = tflite.Interpreter(model_path=modelPath)
     interpreter.allocate_tensors()
     print('Perform an inference based on trainned model')
     result,percent = testObj.inference(interpreter)
