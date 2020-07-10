@@ -44,17 +44,16 @@ run the jupyter notebook on a Kubernetes cluster (for us it is temporarily going
 ### Training on a Kubernetes Cluster (Nautilus):
 Clone the smoke detection model:
 ```
-git clone https://gitlab.nautilus.optiputer.net/i3perez/keras-smoke-detection
-cd keras-smoke-detection
+cd training/
 ```
 Create a persistent volume claim on Nautilus under the Sage namespace (not needed now since it exists):
 ```
-kubectl create -f keras.pvc.yaml
+kubectl create -f training.pvc.yaml
 ```
 
 Create a deployment on kubernetes:
 ```
-kubectl create -f kerasDeloyment.yaml
+kubectl create -f training.deployment.yaml
 ```
 
 Attach to a pod and run bash:
@@ -76,35 +75,19 @@ Access the notebook through your desktops browser on http://localhost:9000
 ### Training on a local node(if no kubernetes cluster is available):
 If there is no kubernetes cluster available for the user, there is a docker file that can be used to run on a local node (assuming that there is a GPU available).
 
-Install Sage-CLI:
-```
-pip3 install git+https://github.com/sagecontinuum/sage-cli.git
-```
-
-Download Training Data (not yet supported):
-```
-sage-cli.py storage files download $BUCKET_ID_TRAINING labeldata
-```
-
-Clone the smoke detection model:
-```
-git clone https://gitlab.nautilus.optiputer.net/i3perez/keras-smoke-detection
-cd keras-smoke-detection
-```
-
 Build docker image:
 ```
-docker build  -t sagecontinuum/smokeDetecTrainModel .
+docker build --build-arg SAGE_HOST=${SAGE_HOST} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} --build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} -t iperezx/training-smokedetect:0.1.0 .
 ```
 
 Run docker image:
 ```
-docker run -it -p 9000:9000 sagecontinuum/smokeDetecTrainModel
+docker run -it -p 9000:9000 iperezx/training-smokedetect:0.1.0
 ```
 
 Attach to container and run jupyter notebook:
 ```
-docker attach sagecontinuum/smokeDetecTrainModel
+docker attach iperezx/training-smokedetect:0.1.0
 jupyter notebook --ip 0.0.0.0 --port 9000 --no-browser --allow-root
 ```
 
