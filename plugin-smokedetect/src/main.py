@@ -3,11 +3,12 @@ import inference,hpwren
 import tflite_runtime.interpreter as tflite
 import time,datetime,os,sys,subprocess
 import waggle.plugin,logging,requests
+from distutils.util import strtobool
 
 object = 'model.tflite'
 directory = '/data/model/'
 modelPath = os.path.join(directory,object)
-
+HPWRENFLAG = strtobool(os.getenv('HPWREN_FLAG'))
 #HPWREN Parameters
 hpwrenUrl = "https://firemap.sdsc.edu/pylaski/\
 stations?camera=only&selection=\
@@ -15,7 +16,15 @@ boundingBox&minLat=0&maxLat=90&minLon=-180&maxLon=0"
 cameraID=0
 siteID=0
 camObj = hpwren.cameras(hpwrenUrl)
-imageURL,description = camObj.getImageURL(cameraID,siteID)
+
+if HPWRENFLAG:
+    serverName = 'HPWREN Camera'
+    imageURL,description = camObj.getImageURL(cameraID,siteID)
+else:
+    #Playback server
+    serverName = 'Playback Server'
+    imageURL = 'http://playback:8090/bottom/image.jpg'
+    description = 'Playback server image'
 
 #For plugin
 plugin = waggle.plugin.Plugin()
@@ -23,7 +32,7 @@ plugin = waggle.plugin.Plugin()
 print('Starting smoke detection inferencing')
 while True:
     testObj = inference.FireImage()
-    print('Get image from HPWREN Camera')
+    print('Get image from ' + serverName)
     print("Image url: " + imageURL)
     print("Description: " + description)
     testObj.urlToImage(imageURL)
