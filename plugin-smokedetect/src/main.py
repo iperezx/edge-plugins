@@ -44,8 +44,8 @@ while True:
     currentDT = str(datetime.datetime.now())
     
     plugin.add_measurement({
-        'sensor_id': 1,
-        'parameter_id':10,
+        'id': 1,
+        'sub_id':10,
         'value': percent,
     })
 
