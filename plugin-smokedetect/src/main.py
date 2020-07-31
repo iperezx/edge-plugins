@@ -5,6 +5,13 @@ import time,datetime,os,sys,subprocess
 #import waggle.plugin,logging,requests
 from distutils.util import strtobool
 
+def getEnsembleLatLongList(latLong):
+    returnList = []
+    x = 0.01
+    for i in range(1,5):
+        returnList.append([latLong[0] + x, latLong[1] + x])
+    return returnList
+
 object = 'model.tflite'
 directory = '/data/model/'
 modelPath = os.path.join(directory,object)
@@ -67,10 +74,3 @@ while True:
             returnStatus = trigger.launchFarsiteModel(params)
 
     time.sleep(5)
-
-def getEnsembleLatLongList(latLong):
-    returnList = []
-    x = 0.01
-    for i in range(1,5):
-        returnList.append([latLong[0] + x, latLong[1] + x])
-    return returnList
