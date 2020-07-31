@@ -1,5 +1,5 @@
 import numpy as np
-import inference,hpwren
+import inference,hpwren,composableSys
 import tflite_runtime.interpreter as tflite
 import time,datetime,os,sys,subprocess
 import waggle.plugin,logging,requests
@@ -25,6 +25,12 @@ else:
     serverName = 'Playback Server'
     imageURL = 'http://playback:8090/bottom/image.jpg'
     description = 'Playback server image'
+
+#triger setup
+urlWindEvents = 'https://wind.events/auth'
+proxyUrl = 'https://wifire-api-proxy.nautilus.optiputer.net'
+trigger = composableSys.trigger(urlWindEvents,proxyUrl)
+returnStatus = trigger.launchFarsiteModel(trigger.getDefaultParams())
 
 #For plugin
 plugin = waggle.plugin.Plugin()
