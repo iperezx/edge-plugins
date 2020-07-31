@@ -30,11 +30,10 @@ else:
 urlWindEvents = 'https://wind.events/auth'
 proxyUrl = 'https://wifire-api-proxy.nautilus.optiputer.net'
 trigger = composableSys.trigger(urlWindEvents,proxyUrl)
-returnStatus = trigger.launchFarsiteModel(trigger.getDefaultParams())
+counter = 0
 
 #For plugin
 plugin = waggle.plugin.Plugin()
-
 print('Starting smoke detection inferencing')
 while True:
     testObj = inference.FireImage()
@@ -57,5 +56,21 @@ while True:
 
     print('Publish\n', flush=True)
     plugin.publish_measurements()
+
+    if (counter == 0 or (result == "Fire" and percent > 0.75)):
+        ensembleLatLongList = getEnsembleLatLongList([32.848132, -116.805901])
+        params = trigger.getDefaultParams()
+        for latLong in ensembleLatLongList:
+            params['ignition']['point'] =  latLong
+            params['webhook']['request_id'] = str(counter)
+            counter += 1
+            returnStatus = trigger.launchFarsiteModel(params)
+
     time.sleep(5)
 
+def getEnsembleLatLongList(latLong):
+    returnList = []
+    x = 0.01
+    for i in range(1,5):
+        returnList.append([latLong[0] + x, latLong[1] + x])
+    return returnList
