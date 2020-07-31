@@ -2,7 +2,7 @@ import numpy as np
 import inference,hpwren,composableSys
 import tflite_runtime.interpreter as tflite
 import time,datetime,os,sys,subprocess
-import waggle.plugin,logging,requests
+#import waggle.plugin,logging,requests
 from distutils.util import strtobool
 
 object = 'model.tflite'
@@ -33,7 +33,7 @@ trigger = composableSys.trigger(urlWindEvents,proxyUrl)
 counter = 0
 
 #For plugin
-plugin = waggle.plugin.Plugin()
+# plugin = waggle.plugin.Plugin()
 print('Starting smoke detection inferencing')
 while True:
     testObj = inference.FireImage()
@@ -48,14 +48,14 @@ while True:
     print(result)
     currentDT = str(datetime.datetime.now())
     
-    plugin.add_measurement({
-        'id': 1,
-        'sub_id':10,
-        'value': percent,
-    })
+    # plugin.add_measurement({
+    #     'id': 1,
+    #     'sub_id':10,
+    #     'value': percent,
+    # })
 
     print('Publish\n', flush=True)
-    plugin.publish_measurements()
+    # plugin.publish_measurements()
 
     if (counter == 0 or (result == "Fire" and percent > 0.75)):
         ensembleLatLongList = getEnsembleLatLongList([32.848132, -116.805901])
