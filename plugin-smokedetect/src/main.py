@@ -49,6 +49,7 @@ while True:
     currentDT = str(datetime.datetime.now())
 
     if (counter == 0 or (result == "Fire" and percent > 0.75)):
+        print('Trigger: Launch Ensemble')
         ensembleLatLongList = trigger.getEnsembleLatLongList([32.848132, -116.805901])
         params = trigger.getDefaultParams()
         for latLong in ensembleLatLongList:
@@ -57,4 +58,5 @@ while True:
             counter += 1
             returnStatus = trigger.launchFarsiteModel(params)
 
+    print(' ')
     time.sleep(5)
