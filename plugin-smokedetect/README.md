@@ -22,13 +22,14 @@ The `BUCKET_ID_MODEL` has been set public so any SAGE user can access the smoke 
 Build the image:
 ```
 docker build --build-arg SAGE_HOST=${SAGE_HOST} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} \
---build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} --build-arg HPWREN_FLAG=${HPWREN_FLAG}   -t sagecontinuum/plugin-smokedetect:0.5.0 .
+--build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} --build-arg HPWREN_FLAG=${HPWREN_FLAG} --build-arg APIKEY=${APIKEY} \
+--build-arg WINDEVENTSTOKEN=${WINDEVENTSTOKEN} --build-arg WINDEVENTSPASSWORD=${WINDEVENTSPASSWORD} -t sagecontinuum/plugin-smokedetect:composableSys .
 ```
 where the `--build-arg` adds all the necessary enviroment variables for the [Sage Storage API](https://github.com/sagecontinuum/sage-storage-api) and [Sage CLI](https://github.com/sagecontinuum/sage-cli)
 
 Run the container(optional since the waggle-node will run it automatically):
 ```
-docker run sagecontinuum/plugin-smokedetect:0.5.0
+docker run sagecontinuum/plugin-smokedetect:composableSys
 ```
 # Instructions
 The following instructions are meant to serve a user from start to finish of how to create the smoke detection plugin.
