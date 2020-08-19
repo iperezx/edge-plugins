@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: smokedetection
+spec:
+  template:
+    spec:
+      containers:
+      - name: smokedetection
+        image: sagecontinuum/plugin-smokedetect:composableSys
+        imagePullPolicy: Always
+        resources:
+           limits:
+             memory: 200Mi
+             cpu: 1
+           requests:
+             memory: 50Mi
+             cpu: 50m
+      restartPolicy: Never
+  backoffLimit: 4
