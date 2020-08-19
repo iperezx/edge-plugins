@@ -52,6 +52,13 @@ class trigger:
         }
         return defaultParams
 
+    def getEnsembleLatLongList(self,latLong):
+        returnList = []
+        x = 0.01
+        for i in range(1,5):
+            returnList.append([latLong[0] + x, latLong[1] + x])
+        return returnList
+
     def setParamDict(self,params):
         #Change this to iterate through each dictionary key and assing it to farsiteParams
         self.farsiteParams['ignition']['point'] =  params['ignition']['point']

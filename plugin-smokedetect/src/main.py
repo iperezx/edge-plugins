@@ -5,13 +5,6 @@ import time,datetime,os,sys,subprocess
 #import waggle.plugin,logging,requests
 from distutils.util import strtobool
 
-def getEnsembleLatLongList(latLong):
-    returnList = []
-    x = 0.01
-    for i in range(1,5):
-        returnList.append([latLong[0] + x, latLong[1] + x])
-    return returnList
-
 object = 'model.tflite'
 directory = '/data/model/'
 modelPath = os.path.join(directory,object)
@@ -54,18 +47,9 @@ while True:
     result,percent = testObj.inference(interpreter)
     print(result)
     currentDT = str(datetime.datetime.now())
-    
-    # plugin.add_measurement({
-    #     'id': 1,
-    #     'sub_id':10,
-    #     'value': percent,
-    # })
-
-    print('Publish\n', flush=True)
-    # plugin.publish_measurements()
 
     if (counter == 0 or (result == "Fire" and percent > 0.75)):
-        ensembleLatLongList = getEnsembleLatLongList([32.848132, -116.805901])
+        ensembleLatLongList = trigger.getEnsembleLatLongList([32.848132, -116.805901])
         params = trigger.getDefaultParams()
         for latLong in ensembleLatLongList:
             params['ignition']['point'] =  latLong
