@@ -9,15 +9,15 @@ object = 'model.tflite'
 directory = '/data/model/'
 modelPath = os.path.join(directory,object)
 HPWRENFLAG = strtobool(os.getenv('HPWREN_FLAG'))
-#HPWREN Parameters
-hpwrenUrl = "https://firemap.sdsc.edu/pylaski/\
-stations?camera=only&selection=\
-boundingBox&minLat=0&maxLat=90&minLon=-180&maxLon=0"
-cameraID=0
-siteID=0
-camObj = hpwren.cameras(hpwrenUrl)
 
 if HPWRENFLAG:
+    #HPWREN Parameters
+    hpwrenUrl = "https://firemap.sdsc.edu/pylaski/\
+    stations?camera=only&selection=\
+    boundingBox&minLat=0&maxLat=90&minLon=-180&maxLon=0"
+    cameraID=0
+    siteID=0
+    camObj = hpwren.cameras(hpwrenUrl)
     serverName = 'HPWREN Camera'
     imageURL,description = camObj.getImageURL(cameraID,siteID)
 else:
