@@ -3,6 +3,8 @@ kind: Job
 metadata:
   name: smokedetection
 spec:
+  completions: 5
+  parallelism: 5
   template:
     spec:
       containers:
