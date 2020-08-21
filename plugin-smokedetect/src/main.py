@@ -48,7 +48,7 @@ while True:
     print(result)
     currentDT = str(datetime.datetime.now())
 
-    if (counter == 0 or (result == "Fire" and percent > 0.75)):
+    if (counter == 0 or ("Fire" in result and percent > 0.75)):
         print('Trigger: Launch Ensemble')
         ensembleLatLongList = trigger.getEnsembleLatLongList([32.848132, -116.805901])
         params = trigger.getDefaultParams()
