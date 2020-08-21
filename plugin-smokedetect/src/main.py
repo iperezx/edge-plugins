@@ -8,7 +8,6 @@ from distutils.util import strtobool
 object = 'model.tflite'
 directory = '/data/model/'
 modelPath = os.path.join(directory,object)
-HPWRENFLAG = strtobool(os.getenv('HPWREN_FLAG'))
 #HPWREN Parameters
 hpwrenUrl = "https://firemap.sdsc.edu/pylaski/\
 stations?camera=only&selection=\
@@ -17,14 +16,8 @@ cameraID=0
 siteID=0
 camObj = hpwren.cameras(hpwrenUrl)
 
-if HPWRENFLAG:
-    serverName = 'HPWREN Camera'
-    imageURL,description = camObj.getImageURL(cameraID,siteID)
-else:
-    #Playback server
-    serverName = 'Playback Server'
-    imageURL = 'http://playback:8090/bottom/image.jpg'
-    description = 'Playback server image'
+serverName = 'HPWREN Camera'
+imageURL,description = camObj.getImageURL(cameraID,siteID)
 
 #triger setup
 urlWindEvents = 'https://wind.events/auth'

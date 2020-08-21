@@ -3,7 +3,7 @@
 ## Docker container usage
 -------------
 The docker image is hosted on [sagecontinuum](https://hub.docker.com/orgs/sagecontinuum).
-Before building the image make sure that the environment variables (`SAGE_HOST`, `SAGE_USER_TOKEN`,`BUCKET_ID_MODEL`, `HPWREN-FLAG`, `APIKEY`,`WINDEVENTSTOKEN`,and `WINDEVENTSPASSWORD`) are set in the user's local enviroment.
+Before building the image make sure that the environment variables (`SAGE_HOST`, `SAGE_USER_TOKEN`,`BUCKET_ID_MODEL`, `APIKEY`,`WINDEVENTSTOKEN`,and `WINDEVENTSPASSWORD`) are set in the user's local enviroment.
 
 Set enviroment variables:
 ```
@@ -11,7 +11,6 @@ export SAGE_HOST=https://sage-storage-api.nautilus.optiputer.net
 export SAGE_USER_TOKEN=SAGE_USER_TOKEN
 export BUCKET_ID_TRAINING=BUCKET_ID_TRAINING
 export BUCKET_ID_MODEL=BUCKET_ID_MODEL
-export HPWREN_FLAG=True
 export APIKEY=APIKEY
 export WINDEVENTSTOKEN=WINDEVENTSTOKEN
 export WINDEVENTSPASSWORD=WINDEVENTSPASSWORD
@@ -22,8 +21,8 @@ The `BUCKET_ID_MODEL` has been set public so any SAGE user can access the smoke 
 Build the image:
 ```
 docker build --build-arg SAGE_HOST=${SAGE_HOST} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} \
---build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} --build-arg HPWREN_FLAG=${HPWREN_FLAG} --build-arg APIKEY=${APIKEY} \
---build-arg WINDEVENTSTOKEN=${WINDEVENTSTOKEN} --build-arg WINDEVENTSPASSWORD=${WINDEVENTSPASSWORD} -t sagecontinuum/plugin-smokedetect:composableSys .
+--build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} --build-arg APIKEY=${APIKEY} --build-arg WINDEVENTSTOKEN=${WINDEVENTSTOKEN} \
+--build-arg WINDEVENTSPASSWORD=${WINDEVENTSPASSWORD} -t sagecontinuum/plugin-smokedetect:composableSys .
 ```
 where the `--build-arg` adds all the necessary enviroment variables for the [Sage Storage API](https://github.com/sagecontinuum/sage-storage-api) and [Sage CLI](https://github.com/sagecontinuum/sage-cli)
 
