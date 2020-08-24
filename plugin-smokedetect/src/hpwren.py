@@ -31,5 +31,11 @@ class cameras:
         hpwrenCamsF = hpwrenCams["features"]
         siteName = hpwrenCamsF[siteID]['properties']['description']['name']
         return siteName
+    
+    def getLatLongForCameraSite(self,siteID=0):
+        hpwrenCams = self.hpwrenCams
+        hpwrenCamsF = hpwrenCams["features"]
+        siteLatLong = hpwrenCamsF[siteID]['geometry']['coordinates']
+        return siteLatLong
         
 

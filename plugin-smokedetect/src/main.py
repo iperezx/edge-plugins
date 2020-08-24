@@ -33,6 +33,7 @@ while True:
     print('Site ID: ' + str(siteID))
     print('Site Name: ' + camObj.getSiteName(siteID))
     print('Number of Cameras on site for inference: ' + str(numCamerasAtSite))
+    siteLatLong = camObj.getLatLongForCameraSite(siteID)
     for cameraID in range(numCamerasAtSite):
         testObj = inference.FireImage()
         imageURL,description = camObj.getImageURL(cameraID,siteID)
@@ -48,7 +49,7 @@ while True:
 
         if (counter == 0 or ("Fire" in result and percent > 0.75)):
             print('Trigger: Launch Ensemble')
-            ensembleLatLongList = trigger.getEnsembleLatLongList([32.848132, -116.805901])
+            ensembleLatLongList = trigger.getEnsembleLatLongList([siteLatLong[1],siteLatLong[0]])
             params = trigger.getDefaultParams()
             for latLong in ensembleLatLongList:
                 params['ignition']['point'] =  latLong
