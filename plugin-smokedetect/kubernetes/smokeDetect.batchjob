@@ -2,10 +2,14 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: smokedetection
+  namespace: enthalpy
 spec:
-  completions: 5
-  parallelism: 5
+  completions: 30
+  parallelism: 30
   template:
+    metadata:
+      annotations:
+        multicluster.admiralty.io/elect: ""
     spec:
       containers:
       - name: smokedetection
