@@ -9,6 +9,7 @@ from io import BytesIO
 class FireImage:
     oneFire = False
     newsize = (128,128)
+    newsize1 = (128,128,3)
     classes = ["No Fire", "Fire"]
     def __init__(self):
         self.image = None
@@ -32,6 +33,12 @@ class FireImage:
         except Exception as err:
             print(f'Other error occurred: {err}')
         self.image = img
+
+    def setImage(self,img):
+        image = img.copy()
+        image = np.resize(image,self.newsize1)
+        image = image.astype("float32") / 255.0
+        self.image = image
 
     def inference(self, tf_lite_interpreter):
         try:

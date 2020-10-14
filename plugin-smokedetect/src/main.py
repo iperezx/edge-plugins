@@ -2,54 +2,30 @@ import numpy as np
 import inference,hpwren
 import tflite_runtime.interpreter as tflite
 import time,datetime,os,sys,subprocess
-import waggle.plugin,logging,requests
 from distutils.util import strtobool
+import waggle.plugin as plugin
+from waggle.data import open_data_source
 
 object = 'model.tflite'
 directory = '/data/model/'
 modelPath = os.path.join(directory,object)
-HPWRENFLAG = strtobool(os.getenv('HPWREN_FLAG'))
-
-if HPWRENFLAG:
-    #HPWREN Parameters
-    hpwrenUrl = "https://firemap.sdsc.edu/pylaski/\
-    stations?camera=only&selection=\
-    boundingBox&minLat=0&maxLat=90&minLon=-180&maxLon=0"
-    cameraID=0
-    siteID=0
-    camObj = hpwren.cameras(hpwrenUrl)
-    serverName = 'HPWREN Camera'
-    imageURL,description = camObj.getImageURL(cameraID,siteID)
-else:
-    #Playback server
-    serverName = 'Playback Server'
-    imageURL = 'http://playback:8090/bottom/image.jpg'
-    description = 'Playback server image'
 
 #For plugin
-plugin = waggle.plugin.Plugin()
+serverName = 'data-stream'
+plugin.init()
 
 print('Starting smoke detection inferencing')
-while True:
-    testObj = inference.FireImage()
-    print('Get image from ' + serverName)
-    print("Image url: " + imageURL)
-    print("Description: " + description)
-    testObj.urlToImage(imageURL)
-    interpreter = tflite.Interpreter(model_path=modelPath)
-    interpreter.allocate_tensors()
-    print('Perform an inference based on trainned model')
-    result,percent = testObj.inference(interpreter)
-    print(result)
-    currentDT = str(datetime.datetime.now())
-    
-    plugin.add_measurement({
-        'id': 1,
-        'sub_id':10,
-        'value': percent,
-    })
-
-    print('Publish\n', flush=True)
-    plugin.publish_measurements()
-    time.sleep(5)
-
+while(True):
+    with open_data_source(id="bottom_image") as cap:
+        testObj = inference.FireImage()
+        timestamp, image = cap.get()
+        testObj.setImage(image)
+        interpreter = tflite.Interpreter(model_path=modelPath)
+        interpreter.allocate_tensors()
+        print('Get image from ' + serverName)
+        print('Perform an inference based on trainned model')
+        result,percent = testObj.inference(interpreter)
+        print(result)
+        print('Publish\n', flush=True)
+        plugin.publish('env.detection.smoke', percent)
+        time.sleep(5)
