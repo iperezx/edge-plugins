@@ -27,5 +27,5 @@ while(True):
         result,percent = testObj.inference(interpreter)
         print(result)
         print('Publish\n', flush=True)
-        plugin.publish('env.detection.smoke', percent)
+        plugin.publish('env.detection.smoke', result)
         time.sleep(5)
