@@ -52,11 +52,11 @@ class trigger:
         }
         return defaultParams
 
-    def getEnsembleLatLongList(self,latLong):
+    def getEnsembleLatLongList(self,latLong,count=0,dx=0.01):
         returnList = []
-        x = 0.01
-        for i in range(1,5):
-            returnList.append([latLong[0] + x, latLong[1] + x])
+        returnList.append(latLong)
+        for i in range(1,count):
+            returnList.append([latLong[0] + dx*i, latLong[1] + dx*i])
         return returnList
 
     def setParamDict(self,params):
