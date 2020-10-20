@@ -14,15 +14,15 @@ hpwrenUrl = "https://firemap.sdsc.edu/pylaski/\
 stations?camera=only&selection=\
 boundingBox&minLat=0&maxLat=90&minLon=-180&maxLon=0"
 camObj = hpwren.cameras(hpwrenUrl)
-numWorkingSites = 40
+numWorkingSites = 30
 siteID = random.randrange(numWorkingSites)
 numCamerasAtSite = camObj.getNumOfCamerasAtSite(siteID)
 serverName = 'HPWREN Camera'
 
 #triger setup
-urlWindEvents = 'https://wind.events/auth'
+authURL = 'https://hotshot.sdsc.edu/pylaski/auth'
 proxyUrl = 'https://wifire-api-proxy.nautilus.optiputer.net'
-trigger = composableSys.trigger(urlWindEvents,proxyUrl)
+trigger = composableSys.trigger(authURL,proxyUrl)
 counter = 0
 
 #For plugin

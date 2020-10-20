@@ -2,25 +2,25 @@ import os
 import requests
 
 class trigger:
-    def __init__(self,urlWindEvents,proxyUrl):
-        authToken = self.getWindEventsToken(urlWindEvents)
-        apiKey = os.getenv('APIKEY')
+    def __init__(self,authURL,proxyUrl):
+        authToken = self.getAuthToken(authURL)
         self.headers = {'content-type': "application/json",
-                        'authorization': 'Bearer ' + authToken['token'],
-                        'x-api-key': apiKey}
+                        'authorization': 'Bearer ' + authToken['token']}
         self.farsiteParams = self.getDefaultParams()
         self.proxyUrl = proxyUrl
         
-    def getWindEventsToken(self,urlWindEvents):
-        windEventsToken = os.getenv('WINDEVENTSTOKEN')
-        if windEventsToken is None:
-            raise EnvironmentError("Failed because {} is not set.".format('WINDEVENTSTOKEN'))
-        headers = {'Authorization': 'Basic {}'.format(windEventsToken),'content-type':'application/json'}
-        windEventsPassword = os.getenv('WINDEVENTSPASSWORD')
-        if windEventsPassword is None:
-            raise EnvironmentError("Failed because {} is not set.".format('WINDEVENTSPASSWORD'))
-        data = {'user':'wifire','password':windEventsPassword}
-        r = requests.request('GET',urlWindEvents,headers=headers,json=data)
+    def getAuthToken(self,authURL):
+        userName = os.getenv('AUTHUSERNAME')
+        password = os.getenv('AUTHPASSWORD')
+
+        if userName is None:
+            raise EnvironmentError("Failed because {} is not set.".format('AUTHUSERNAME'))
+        if password is None:
+            raise EnvironmentError("Failed because {} is not set.".format('AUTHPASSWORD'))
+        
+        authURL1 = authURL+'?user='+ userName + '&password=' + password
+
+        r = requests.request('GET',authURL1)
         authToken = r.json()
         return authToken
 
