@@ -5,6 +5,7 @@ import time,datetime,os,sys,subprocess
 from distutils.util import strtobool
 import waggle.plugin as plugin
 from waggle.data import open_data_source
+import cv2
 
 object = 'model.tflite'
 directory = '/data/model/'
@@ -28,4 +29,7 @@ while(True):
         print(result)
         print('Publish\n', flush=True)
         plugin.publish('env.detection.smoke', result)
+        print('Write and upload image\n',flush=True)
+        cv2.imwrite('/tmp/sample.jpg', image)
+        plugin.upload_file('/tmp/sample.jpg')
         time.sleep(5)
