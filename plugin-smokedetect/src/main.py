@@ -12,9 +12,9 @@ HPWRENFLAG = strtobool(os.getenv('HPWREN_FLAG'))
 
 if HPWRENFLAG:
     #HPWREN Parameters
-    hpwrenUrl = "https://firemap.sdsc.edu/pylaski/\
-    stations?camera=only&selection=\
-    boundingBox&minLat=0&maxLat=90&minLon=-180&maxLon=0"
+    hpwrenUrl = "https://firemap.sdsc.edu/pylaski/"\
+    "stations?camera=only&selection="\
+    "boundingBox&minLat=0&maxLat=90&minLon=-180&maxLon=0"
     cameraID=0
     siteID=0
     camObj = hpwren.cameras(hpwrenUrl)
