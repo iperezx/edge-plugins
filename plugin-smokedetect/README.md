@@ -117,10 +117,10 @@ where PLUGIN-DIRECTORY is the directory of your plugin. For example my plugin is
 Example output of the plugin:
 ```bash
 Get image from HPWREN Camera
-Image url: https://hpwren.ucsd.edu/cameras/L/bm-n-mobo-m.jpg
-Description: Big Black Mountain ~north view, monochrome
+Image url: http://hpwren.ucsd.edu/cameras/L/bm-n-mobo-c.jpg
+Description: Big Black Mountain North Color Original
 Perform an inference based on trainned model
-No Fire, 58.28%
+Fire, 71.29%
 Publish
 ```
 The plugin now supports the Playback Server. In order to configure the playback server see [Playback Server Docs](https://github.com/waggle-sensor/waggle-node#playback-service-optional). For this example, I used one of the folders from the [Fire Ignition Libary](http://hpwren.ucsd.edu/HPWREN-FIgLib/)
