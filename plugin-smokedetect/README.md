@@ -3,11 +3,11 @@
 ## Docker container usage
 -------------
 The docker image is hosted on [sagecontinuum](https://hub.docker.com/orgs/sagecontinuum).
-Before building the image make sure that the environment variables (`SAGE_HOST`, `SAGE_USER_TOKEN`,`BUCKET_ID_MODEL`, and `HPWREN-FLAG`) are set in the user's local enviroment.
+Before building the image make sure that the environment variables (`SAGE_STORE_URL`, `SAGE_USER_TOKEN`,`BUCKET_ID_MODEL`, and `HPWREN-FLAG`) are set in the user's local enviroment.
 
 Set enviroment variables:
 ```
-export SAGE_HOST=https://sage-storage-api.nautilus.optiputer.net
+export SAGE_STORE_URL=https://sage-storage-api.nautilus.optiputer.net
 export SAGE_USER_TOKEN=SAGE_USER_TOKEN
 export BUCKET_ID_TRAINING=BUCKET_ID_TRAINING
 export BUCKET_ID_MODEL=BUCKET_ID_MODEL
@@ -18,7 +18,7 @@ The `BUCKET_ID_MODEL` has been set public so any SAGE user can access the smoke 
 
 Build the image:
 ```
-docker build --build-arg SAGE_HOST=${SAGE_HOST} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} \
+docker build --build-arg SAGE_STORE_URL=${SAGE_STORE_URL} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} \
 --build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} --build-arg HPWREN_FLAG=${HPWREN_FLAG}   -t sagecontinuum/plugin-smokedetect:0.5.0 .
 ```
 where the `--build-arg` adds all the necessary enviroment variables for the [Sage Storage API](https://github.com/sagecontinuum/sage-storage-api) and [Sage CLI](https://github.com/sagecontinuum/sage-cli)
