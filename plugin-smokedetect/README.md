@@ -125,7 +125,7 @@ Fire, 71.29%
 Publish
 ```
 
-Setup for MIC:
+## Setup for MIC:
 
 ```bash
 mic pkg start
