@@ -3,7 +3,7 @@
 ## Docker container usage
 -------------
 The docker image is hosted on [sagecontinuum](https://hub.docker.com/orgs/sagecontinuum).
-Before building the image make sure that the environment variables (`SAGE_STORE_URL`, `SAGE_USER_TOKEN`,`BUCKET_ID_MODEL`, and `HPWREN-FLAG`) are set in the user's local enviroment.
+Before building the image make sure that the environment variables (`SAGE_STORE_URL`, `SAGE_USER_TOKEN`, and `BUCKET_ID_MODEL`) are set in the user's local enviroment.
 
 Set enviroment variables:
 ```
@@ -11,7 +11,6 @@ export SAGE_STORE_URL=https://sage-storage-api.nautilus.optiputer.net
 export SAGE_USER_TOKEN=SAGE_USER_TOKEN
 export BUCKET_ID_TRAINING=BUCKET_ID_TRAINING
 export BUCKET_ID_MODEL=BUCKET_ID_MODEL
-export HPWREN_FLAG=True
 ```
 To obtain a token, visit the [Sage Authorization UI](https://sage.nautilus.optiputer.net).
 The `BUCKET_ID_MODEL` has been set public so any SAGE user can access the smoke detection models.
@@ -19,13 +18,13 @@ The `BUCKET_ID_MODEL` has been set public so any SAGE user can access the smoke 
 Build the image:
 ```
 docker build --build-arg SAGE_STORE_URL=${SAGE_STORE_URL} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} \
---build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} --build-arg HPWREN_FLAG=${HPWREN_FLAG}   -t sagecontinuum/plugin-smokedetect:0.5.0 .
+--build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} -t sagecontinuum/plugin-smokedetect:0.5.0 .
 ```
 where the `--build-arg` adds all the necessary enviroment variables for the [Sage Storage API](https://github.com/sagecontinuum/sage-storage-api) and [Sage CLI](https://github.com/sagecontinuum/sage-cli)
 
 Run the container(optional since the waggle-node will run it automatically):
 ```
-docker run sagecontinuum/plugin-smokedetect:0.5.0
+docker run sagecontinuum/plugin-smokedetect:0.5.0 --siteID 0 --cameraID 0
 ```
 # Instructions
 The following instructions are meant to serve a user from start to finish of how to create the smoke detection plugin.
@@ -114,6 +113,8 @@ To run the plugin the waggle node now takes in a string of docker-like build arg
 ```
 where PLUGIN-DIRECTORY is the directory of your plugin. For example my plugin is set to `~/Documents/edge-plugins/plugin-smokedetect`.
 
+## Example output
+
 Example output of the plugin:
 ```bash
 Get image from HPWREN Camera
@@ -121,16 +122,5 @@ Image url: http://hpwren.ucsd.edu/cameras/L/bm-n-mobo-c.jpg
 Description: Big Black Mountain North Color Original
 Perform an inference based on trainned model
 Fire, 71.29%
-Publish
-```
-The plugin now supports the Playback Server. In order to configure the playback server see [Playback Server Docs](https://github.com/waggle-sensor/waggle-node#playback-service-optional). For this example, I used one of the folders from the [Fire Ignition Libary](http://hpwren.ucsd.edu/HPWREN-FIgLib/)
-and placed it in the bottom directory.
-
-```bash
-Get image from Playback Server
-Image url: http://playback:8090/bottom/image.jpg
-Description: Playback server image
-Perform an inference based on trainned model
-No Fire, 52.81%
 Publish
 ```
