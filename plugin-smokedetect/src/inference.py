@@ -33,6 +33,11 @@ class FireImage:
             print(f'Other error occurred: {err}')
         self.image = img
 
+    def writeImage(self,imageFilePath):
+        im = Image.fromarray((self.image * 255).astype(np.uint8))
+        im.save(imageFilePath)
+
+
     def inference(self, tf_lite_interpreter):
         try:
             input_data = np.expand_dims(self.image, axis=0)

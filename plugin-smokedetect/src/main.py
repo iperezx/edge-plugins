@@ -2,9 +2,8 @@ import numpy as np
 import inference,hpwren
 import tflite_runtime.interpreter as tflite
 import time,datetime,os,sys,subprocess
-import waggle.plugin,logging,requests
 from distutils.util import strtobool
-import argparse
+import argparse,json
 
 numWorkingSites = 30
 totalCameraTypes = 1
@@ -19,8 +18,13 @@ cameraType=args.cameraType
 siteID=args.siteID
 
 object = 'model.tflite'
-directory = '/data/model/'
-modelPath = os.path.join(directory,object)
+workDir = '/src'
+modelPath = os.path.abspath(os.path.join(workDir,object))
+imageName = 'hpwren-image-used-for-inference.jpeg'
+imagePath = os.path.abspath(os.path.join(workDir,imageName))
+
+resultsName = 'model-inference-results.json'
+resultsPath = os.path.abspath(os.path.join(workDir,resultsName))
 
 #HPWREN Parameters
 hpwrenUrl = "https://firemap.sdsc.edu/pylaski/"\
@@ -30,30 +34,29 @@ camObj = hpwren.cameras(hpwrenUrl)
 serverName = 'HPWREN Camera'
 imageURL,description = camObj.getImageURL(cameraType,siteID)
 
-#For plugin
-plugin = waggle.plugin.Plugin()
+#Inference Section
+# print('Starting smoke detection inferencing')
+testObj = inference.FireImage()
+# print('Get image from ' + serverName)
+# print("Image url: " + imageURL)
+# print("Description: " + description)
+testObj.urlToImage(imageURL)
+testObj.writeImage(imagePath)
 
-print('Starting smoke detection inferencing')
-while True:
-    testObj = inference.FireImage()
-    print('Get image from ' + serverName)
-    print("Image url: " + imageURL)
-    print("Description: " + description)
-    testObj.urlToImage(imageURL)
-    interpreter = tflite.Interpreter(model_path=modelPath)
-    interpreter.allocate_tensors()
-    print('Perform an inference based on trainned model')
-    result,percent = testObj.inference(interpreter)
-    print(result)
-    currentDT = str(datetime.datetime.now())
-    
-    plugin.add_measurement({
-        'id': 1,
-        'sub_id':10,
-        'value': percent,
-    })
+interpreter = tflite.Interpreter(model_path=modelPath)
+interpreter.allocate_tensors()
+result,percent = testObj.inference(interpreter)
+# print('Perform an inference based on trainned model')
+# print(result)
 
-    print('Publish\n', flush=True)
-    plugin.publish_measurements()
-    time.sleep(5)
-
+#Output section
+classifier = result.split(',')[0]
+currentDT = str(datetime.datetime.now())
+outputDataSchema = ['Image Server','Image URL','Image Description',
+                    'Inference Classifier','Inference Accuracy',
+                    'Inference Datetime']
+outputDataVals = [serverName,imageURL,description,
+                    classifier,percent,currentDT]
+outputDataDict = {outputDataSchema[i]: outputDataVals[i] for i in range(len(outputDataSchema))}
+with open(resultsPath,'w') as fp:
+    json.dump(outputDataDict,fp)

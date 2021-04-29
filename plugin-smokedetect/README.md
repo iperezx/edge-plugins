@@ -124,3 +124,16 @@ Perform an inference based on trainned model
 Fire, 71.29%
 Publish
 ```
+
+Setup for MIC:
+
+```bash
+mic pkg start
+mic pkg trace python3 /src/main.py --cameraType 0 --siteID 0
+mic pkg parameters -f mic/mic.yaml -n siteID -v 0 -d 'Input parameter used to provide the hpwren camera site'
+mic pkg parameters -f mic/mic.yaml -n cameraType -v 0 -d 'Input parameter used to provide the hpwren camera type'
+mic pkg inputs
+mic pkg outputs
+mic pkg wrapper
+mic pkg run
+```
