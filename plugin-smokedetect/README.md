@@ -128,7 +128,7 @@ Publish
 ## Setup for MIC:
 
 ```bash
-mic pkg start
+mic pkg start --name smoke-detection --image sagecontinuum/plugin-smokedetect:ai-gateway-demo
 mic pkg trace python3 /src/main.py --cameraType 0 --siteID 0
 mic pkg parameters -f mic/mic.yaml -n siteID -v 0 -d 'Input parameter used to provide the hpwren camera site'
 mic pkg parameters -f mic/mic.yaml -n cameraType -v 0 -d 'Input parameter used to provide the hpwren camera type'

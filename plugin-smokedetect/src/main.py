@@ -18,13 +18,15 @@ cameraType=args.cameraType
 siteID=args.siteID
 
 object = 'model.tflite'
-workDir = '/src'
-modelPath = os.path.abspath(os.path.join(workDir,object))
+modelDir = 'src/'
+modelPath = os.path.abspath(os.path.join(modelDir,object))
+
+resultsDir = 'src/'
 imageName = 'hpwren-image-used-for-inference.jpeg'
-imagePath = os.path.abspath(os.path.join(workDir,imageName))
+imagePath = imageName
 
 resultsName = 'model-inference-results.json'
-resultsPath = os.path.abspath(os.path.join(workDir,resultsName))
+resultsPath = resultsName
 
 #HPWREN Parameters
 hpwrenUrl = "https://firemap.sdsc.edu/pylaski/"\
@@ -35,19 +37,19 @@ serverName = 'HPWREN Camera'
 imageURL,description = camObj.getImageURL(cameraType,siteID)
 
 #Inference Section
-# print('Starting smoke detection inferencing')
+print('Starting smoke detection inferencing')
 testObj = inference.FireImage()
-# print('Get image from ' + serverName)
-# print("Image url: " + imageURL)
-# print("Description: " + description)
+print('Get image from ' + serverName)
+print("Image url: " + imageURL)
+print("Description: " + description)
 testObj.urlToImage(imageURL)
 testObj.writeImage(imagePath)
 
 interpreter = tflite.Interpreter(model_path=modelPath)
 interpreter.allocate_tensors()
 result,percent = testObj.inference(interpreter)
-# print('Perform an inference based on trainned model')
-# print(result)
+print('Perform an inference based on trainned model')
+print(result)
 
 #Output section
 classifier = result.split(',')[0]
