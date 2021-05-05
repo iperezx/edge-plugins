@@ -3,47 +3,22 @@
 ## Docker container usage
 -------------
 The docker image is hosted on [sagecontinuum](https://hub.docker.com/orgs/sagecontinuum).
-Before building the image make sure that the environment variables (`SAGE_STORE_URL`, `SAGE_USER_TOKEN`, and `BUCKET_ID_MODEL`) are set in the user's local enviroment.
-
-Set enviroment variables:
-```
-export SAGE_STORE_URL=https://sage-storage-api.nautilus.optiputer.net
-export SAGE_USER_TOKEN=SAGE_USER_TOKEN
-export BUCKET_ID_TRAINING=BUCKET_ID_TRAINING
-export BUCKET_ID_MODEL=BUCKET_ID_MODEL
-```
-To obtain a token, visit the [Sage Authorization UI](https://sage.nautilus.optiputer.net).
-The `BUCKET_ID_MODEL` has been set public so any SAGE user can access the smoke detection models.
 
 Build the image:
 ```
-docker build --build-arg SAGE_STORE_URL=${SAGE_STORE_URL} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} \
---build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} -t sagecontinuum/plugin-smokedetect:0.5.0 .
+docker build  -t sagecontinuum/plugin-smokedetect:ai-gateway-demo .
 ```
-where the `--build-arg` adds all the necessary enviroment variables for the [Sage Storage API](https://github.com/sagecontinuum/sage-storage-api) and [Sage CLI](https://github.com/sagecontinuum/sage-cli)
-
-Run the container(optional since the waggle-node will run it automatically):
+Run the container:
 ```
-docker run sagecontinuum/plugin-smokedetect:0.5.0 --siteID 0 --cameraID 0
+docker run sagecontinuum/plugin-smokedetect:ai-gateway-demo --siteID 0 --cameraType 0
 ```
 # Instructions
 The following instructions are meant to serve a user from start to finish of how to create the smoke detection plugin.
 
-## Step 1: clone beehive repository 
-```
-git clone https://github.com/waggle-sensor/beehive-server
-cd beehive-server
-```
-Start the server:
-```
-./do.sh deploy
-```
-
-## Step 2: run trainning jupyter notebook and save model
+## Step 1: run trainning jupyter notebook and save model
 There are two options to train the smoke detection neural network. The first one is to
 run the jupyter notebook on a Kubernetes cluster (for us it is temporarily going to be [Nautilus](https://nautilus.optiputer.net/)). The second option is to run it locally assuming that there is a GPU availabe on the local node (the docker image might fail but Tensorflow will not).
 ### Training on a Kubernetes Cluster (Nautilus):
-Clone the smoke detection model:
 ```
 cd training/
 ```
@@ -78,7 +53,7 @@ If there is no kubernetes cluster available for the user, there is a docker file
 
 Build docker image:
 ```
-docker build --build-arg SAGE_HOST=${SAGE_HOST} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} --build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} -t iperezx/training-smokedetect:0.1.0 .
+docker build -t iperezx/training-smokedetect:0.1.0 .
 ```
 
 Run docker image:
@@ -95,23 +70,8 @@ jupyter notebook --ip 0.0.0.0 --port 9000 --no-browser --allow-root
 Access the notebook through your desktops browser on http://localhost:9000 
 
 ### Final Step
-Run the juputer notebook as describe in the [README file](https://gitlab.nautilus.optiputer.net/i3perez/keras-smoke-detection/-/blob/master/README.md). At the end of the notebook
-the trainned model will be save to the object storage through [SAGE Storage API](https://github.com/sagecontinuum/sage-storage-api)
+Run the juputer notebook as describe in the [README file](https://gitlab.nautilus.optiputer.net/i3perez/keras-smoke-detection/-/blob/master/README.md). A tensorflow lite model will be automically saved (in the last cell).
 
-## Step 3: Set up Waggle Node
-```
-git clone https://github.com/waggle-sensor/waggle-node
-```
-To start the waggle node (this assumes an existing beehive instance):
-```bash
-./waggle-node up
-```
-
-To run the plugin the waggle node now takes in a string of docker-like build args (do not forget to set the enviroment variables):
-```bash
-./waggle-node run $(./waggle-node build --build-arg SAGE_HOST=${SAGE_HOST} --build-arg SAGE_USER_TOKEN=${SAGE_USER_TOKEN} --build-arg BUCKET_ID_MODEL=${BUCKET_ID_MODEL} --build-arg HPWREN_FLAG=${HPWREN_FLAG} PLUGIN-DIRECTORY
-```
-where PLUGIN-DIRECTORY is the directory of your plugin. For example my plugin is set to `~/Documents/edge-plugins/plugin-smokedetect`.
 
 ## Example output
 
@@ -125,7 +85,7 @@ Fire, 71.29%
 Publish
 ```
 
-## Setup for MIC:
+## Setup for MIC to upload model to MINT:
 
 ```bash
 mic pkg start --name smoke-detection --image sagecontinuum/plugin-smokedetect:ai-gateway-demo
