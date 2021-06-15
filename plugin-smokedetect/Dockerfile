@@ -4,7 +4,6 @@ WORKDIR /src
 RUN pip3 install --upgrade pip
 RUN pip3 install -r /src/requirements.txt
 RUN mkdir -p /data/model/
-ARG SAGE_USER_TOKEN="-10"
 ARG SAGE_STORE_URL="HOST"
 ARG BUCKET_ID_MODEL="BUCKET_ID_MODEL"
 ARG LC_ALL="C.UTF-8"
@@ -18,7 +17,6 @@ ENV LC_ALL="C.UTF-8" \
     WAGGLE_PLUGIN_VERSION="0.4.0" \
     WAGGLE_PLUGIN_INSTANCE="1" \
     WAGGLE_PLUGIN_REF="https://github.com/iperezx/edge-plugins/tree/master/plugin-smokedetect" \
-    SAGE_USER_TOKEN=${SAGE_USER_TOKEN} \
     SAGE_STORE_URL=${SAGE_STORE_URL} \
     BUCKET_ID_MODEL=${BUCKET_ID_MODEL} \
     HPWREN_FLAG=${HPWREN_FLAG}
